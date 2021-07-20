@@ -12,3 +12,5 @@
 * Покупателю предоставляются скидки на категорию товаров, а также на конкретный товар (таблицы ProductCustomerDiscount и CategoryCustomerDiscount);
 
 home_work_1 - первое ДЗ
+
+home_work_2 - второе ДЗ с доработанной схемой
