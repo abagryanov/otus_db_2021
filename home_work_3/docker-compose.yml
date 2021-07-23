@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    image: library/postgres:13.2
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root123
+
+  postgres-admin:
+    image: library/adminer:4.8.0
+    restart: always
+    ports:
+      - 8080:8080
