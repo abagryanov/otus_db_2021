@@ -1,7 +1,7 @@
-CREATE USER otus WITH ENCRYPTED PASSWORD 'otus';
-CREATE DATABASE otus_internet_shop OWNER otus;
+create user otus with encrypted password 'otus';
+create database otus_internet_shop owner otus;
 \connect otus_internet_shop;
-CREATE SCHEMA IF NOT EXISTS company AUTHORIZATION otus;
-CREATE SCHEMA IF NOT EXISTS product AUTHORIZATION otus;
-CREATE SCHEMA IF NOT EXISTS customer AUTHORIZATION otus;
-CREATE SCHEMA IF NOT EXISTS supplier AUTHORIZATION otus;
+create schema if not exists company authorization otus;
+create schema if not exists product authorization otus;
+create schema if not exists customer authorization otus;
+create schema if not exists supplier authorization otus;
