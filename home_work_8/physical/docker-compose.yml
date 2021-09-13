@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+
+  postgres_master:
+    build: ./master
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root1
+      POSTGRES_PASSWORD: root1
+      POSTGRES_DB: postgres
+      PG_REPLICATION_USER: replica
+      PG_REPLICATION_PASSWORD: replica1
+    networks:
+      default:
+        aliases:
+          - pg_cluster
+
+  postgres_replica:
+    build: ./replica
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: root1
+      POSTGRES_PASSWORD: root1
+      POSTGRES_DB: postgres
+      PG_REPLICATION_USER: replica
+      PG_REPLICATION_PASSWORD: replica1
+      PG_MASTER_HOST: postgres_master
+      PG_MASTER_PORT: 5432
+    networks:
+      default:
+        aliases:
+          - pg_cluster
