@@ -15,3 +15,11 @@
 
     В поле product_tags предлагается указывать тэги продукта, которые расширяли возможности описания и поиска 
     продуктов (помимо категорий).
+
+    Пример записис данных: 
+    insert into product_tag (product_id, product_tags) values (
+        1, '["ФИТНЕС", "СПОРТИВНОЕ ПИТАНИЕ", "НОВИНКА"]'
+    );
+
+    Пример получения данных:
+    select product_id from product_tags where json_search(product_tags, '["НОВИНКА"]')
