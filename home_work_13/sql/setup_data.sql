@@ -48,6 +48,7 @@ values ('РОСТОВ', 'ЛЕТНЯЯ', '1', 'ПЕРВЫЙ ВЪЕЗД'),
        ('КАЗАНЬ', 'ШВЕЙНАЯ', '4', 'ВЛАДЕНИЕ 3'),
        ('РЯЗАНЬ', 'КОМСОМОЛЬСКАЯ', '5', 'ВЛАДЕНИЕ 5'),
        ('КРАСНОДАР', 'КАЗАЧЬЯ', '6', 'ПРОМЫШЛЕННАЯ ЗОНА 6');
+
 -- Заполянем связь поставщика с расположением
 insert into supplier_location (supplier_id, location_info_id)
 values (1, 1),
@@ -143,6 +144,7 @@ values ('2021-08-06', 100.0, 1),
 -- Заполняем значения скидок на товары
 insert into product_discount (discount, start_date, finish_date, supplier_product_id)
 values (0.3, '2021-08-06', '2021-11-06', 1),
+       (0.35, '2021-08-06', '2021-11-06', 1),
        (0.4, '2021-08-06', '2021-12-06', 2),
        (0.25, '2021-08-06', '2021-12-06', 3);
 
@@ -175,34 +177,6 @@ values (0.42, '2021-08-06', '2021-11-06', 1, 1),
        (0.49, '2021-08-06', '2021-12-06', 2, 2),
        (0.64, '2021-08-06', '2021-12-06', 2, 3);
 
--- Заполняем подзаказы для заказов покупателей
-insert into customer_sub_order (amount, supplier_product_price_id)
-values (1.0, 1),
-       (2.0, 2),
-       (3.0, 3),
-       (4.0, 4),
-       (1.0, 5),
-       (2.0, 6),
-       (3.0, 7),
-       (4.0, 8);
-
--- Заполняем заказы для покупателей
-insert into customer_order (created_datetime, payed_datetime, total_price, total_discount, customer_id,
-                                     customer_order_status_id)
-values ('2021-08-06 12:30:30', '2021-08-06 12:35:40', 0.0, 0.0, 1, 2),
-       ('2021-08-06 13:30:30', '2021-08-06 13:35:40', 0.0, 0.0, 2, 2);
-
--- Заполняем связи подзаказов с заказами покупателей
-insert into customer_order_detail (customer_order_id, customer_sub_order_id)
-values (1, 1),
-       (1, 2),
-       (1, 3),
-       (1, 4),
-       (2, 5),
-       (2, 6),
-       (2, 7),
-       (2, 8);
-
 -- Заполняем адреса покупателей
 insert into location_info (city, street, building, additional_info)
 values ('МОСКВА', 'СОЛНЕЧНАЯ', '1', '3-Й ПОДЪЕЗД, 12 ЭТАЖ, КВАРТИРА 25'),
@@ -222,9 +196,3 @@ values (9),
 insert into customer_delivery_location (customer_id, location_info_id)
 values (1, 7),
        (2, 8);
-
--- Заполняем доставки заказов
-insert into customer_order_delivery (delivery_date, delivery_info, customer_order_id, delivery_type_id,
-                                              pickup_delivery_location_id, customer_delivery_location_id)
-values ('2021-08-15', 'ЗАБЕРУ ПОСЛЕ 18-00', 1, 1, 1, null),
-       ('2021-08-20', 'ДОСТАВЬТЕ ПОСЛЕ 12-00 И ДО 16-00', 2, 2, null, 2);
