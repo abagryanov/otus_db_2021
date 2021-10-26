@@ -1,16 +1,15 @@
 delimiter $$
 
 create procedure create_customer_order(in user_id int, in order_products json, in is_customer_delivery_location boolean,
-                                in delivery_location_id int, in delivery_date date, in delivery_info text,
-                                out customer_order_delivery_id int)
+                                in delivery_location_id int, in delivery_date date, in delivery_info text)
 begin
-    declare order_products_counter int unsigned
+    declare order_products_counter int
         default 0;
-    declare order_products_size int unsigned
+    declare order_products_size int
         default json_length(order_products);
-    declare total_price numeric unsigned
+    declare total_price numeric(10, 2)
         default 0;
-    declare total_discount numeric unsigned
+    declare total_discount numeric(10, 2)
         default 0;
     declare exit handler for sqlexception
         begin
@@ -50,10 +49,14 @@ begin
             select max(discount) into @category_customer_discount from otus_internet_shop.category_customer_discount where
                 category_id in (select category_id from otus_internet_shop.product_category where
                     product_id = @product_id) and
+                customer_id = user_id and
                 start_date <= now() and
                 finish_date >= now();
             set @product_final_discount = greatest(@product_discount, @category_discount, @product_customer_discount,
                 @category_customer_discount);
+            if (@product_final_discount is null) then
+                set @product_final_discount = 0;
+            end if;
             select supplier_product_price_id, price into @supplier_product_price_id, @product_price from
                 otus_internet_shop.supplier_product_price where
                 price = (select max(price) from otus_internet_shop.supplier_product_price where
@@ -64,8 +67,8 @@ begin
                 margin = (select max(margin) from otus_internet_shop.product_margin where
                         product_id = @product_id) and
                 product_id = @product_id;
-            set total_price = total_price + (1 - @product_discount) * @product_margin * @product_price * @product_amount;
-            set total_discount = total_discount + @product_discount * @product_margin * @product_price * @product_amount;
+            set total_price = total_price + (1 - @product_final_discount) * @product_margin * @product_price * @product_amount;
+            set total_discount = total_discount + @product_final_discount * @product_margin * @product_price * @product_amount;
             update otus_internet_shop.customer_order set
                 total_price = total_price,
                 total_discount = total_discount
@@ -88,7 +91,7 @@ begin
         (delivery_date, delivery_info, @customer_order_id, 1, delivery_location_id);
     end if;
     commit;
-    set customer_order_delivery_id = last_insert_id();
+    select @customer_order_id;
 
 end $$
 delimiter ;
