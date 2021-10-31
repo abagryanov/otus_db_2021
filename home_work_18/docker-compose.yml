@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  mysql:
+    build: ./
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+    volumes:
+      - c:/Users/ABagryanov/DockerShare/otus/home_work_18:/var/lib/mysql
+      - c:/Users/ABagryanov/DockerShare/otus/stream:/tmp/backup/stream2
+    expose:
+      - "3306"
+    ports:
+      - "3309:3306"
