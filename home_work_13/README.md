@@ -12,7 +12,7 @@
         
     a. LOAD DATA
       В MySQL workbench настраиваем коннект: Database -> Manage Connections -> Выбираем соединение -> Connection (Advanced)
-      -> Дописываем: OPT_LOCAL_INFILE=1
+      -> Дописываем: OPT_LOCAL_INFILE=1. Также в консоли выполняем: SET GLOBAL local_infile=1;
    
       В консоли:
          create database test;
