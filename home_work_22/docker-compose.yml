@@ -1,0 +1,132 @@
+version: '3.8'
+
+services:
+  mongo11:
+    image: mongo:4.4
+    hostname: mongo11
+    command: ["/usr/bin/mongod", "--shardsvr", "--replSet", "rs1", "--bind_ip_all", "--port", "27011" ]
+    ports:
+      - 27011:27011
+    healthcheck:
+      test: test $$(echo "rs.initiate({_id:\"rs1\",members:[{_id:0,host:\"mongo11:27011\"},{_id:1,host:\"mongo12:27012\"},{_id:2,host:\"mongo13:27013\"},{_id:3,host:\"mongo14:27014\",arbiterOnly:true}]}).ok || rs.status().ok" | mongo --port 27011 --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+
+  mongo12:
+    image: mongo:4.4
+    hostname: mongo12
+    command: ["/usr/bin/mongod", "--shardsvr", "--replSet", "rs1", "--bind_ip_all", "--port", "27012" ]
+    ports:
+      - 27012:27012
+
+  mongo13:
+    image: mongo:4.4
+    hostname: mongo13
+    command: ["/usr/bin/mongod", "--shardsvr", "--replSet", "rs1", "--bind_ip_all", "--port", "27013" ]
+    ports:
+      - 27013:27013
+
+  mongo14:
+    image: mongo:4.4
+    hostname: mongo14
+    command: [ "/usr/bin/mongod", "--shardsvr", "--replSet", "rs1", "--bind_ip_all", "--port", "27014" ]
+    ports:
+      - 27014:27014
+
+  mongo21:
+    image: mongo:4.4
+    hostname: mongo21
+    command: [ "/usr/bin/mongod", "--shardsvr", "--replSet", "rs2", "--bind_ip_all", "--port", "27021" ]
+    ports:
+      - 27021:27021
+    healthcheck:
+      test: test $$(echo "rs.initiate({_id:\"rs2\",members:[{_id:0,host:\"mongo21:27021\"},{_id:1,host:\"mongo22:27022\"},{_id:2,host:\"mongo23:27023\"},{_id:3,host:\"mongo24:27024\",arbiterOnly:true}]}).ok || rs.status().ok" | mongo --port 27021 --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+
+  mongo22:
+    image: mongo:4.4
+    hostname: mongo22
+    command: [ "/usr/bin/mongod", "--shardsvr", "--replSet", "rs2", "--bind_ip_all", "--port", "27022" ]
+    ports:
+      - 27022:27022
+
+  mongo23:
+    image: mongo:4.4
+    hostname: mongo23
+    command: [ "/usr/bin/mongod", "--shardsvr", "--replSet", "rs2", "--bind_ip_all", "--port", "27023" ]
+    ports:
+      - 27023:27023
+
+  mongo24:
+    image: mongo:4.4
+    hostname: mongo24
+    command: [ "/usr/bin/mongod", "--shardsvr", "--replSet", "rs2", "--bind_ip_all", "--port", "27024" ]
+    ports:
+      - 27024:27024
+
+  mongo31:
+    image: mongo:4.4
+    hostname: mongo31
+    command: [ "/usr/bin/mongod", "--shardsvr", "--replSet", "rs3", "--bind_ip_all", "--port", "27031" ]
+    ports:
+      - 27031:27031
+    healthcheck:
+      test: test $$(echo "rs.initiate({_id:\"rs3\",members:[{_id:0,host:\"mongo31:27031\"},{_id:1,host:\"mongo32:27032\"},{_id:2,host:\"mongo33:27033\"},{_id:3,host:\"mongo34:27034\",arbiterOnly:true}]}).ok || rs.status().ok" | mongo --port 27031 --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+
+  mongo32:
+    image: mongo:4.4
+    hostname: mongo32
+    command: [ "/usr/bin/mongod", "--shardsvr", "--replSet", "rs3", "--bind_ip_all", "--port", "27032" ]
+    ports:
+      - 27032:27032
+
+  mongo33:
+    image: mongo:4.4
+    hostname: mongo33
+    command: [ "/usr/bin/mongod", "--shardsvr", "--replSet", "rs3", "--bind_ip_all", "--port", "27033" ]
+    ports:
+      - 27033:27033
+
+  mongo34:
+    image: mongo:4.4
+    hostname: mongo34
+    command: [ "/usr/bin/mongod", "--shardsvr", "--replSet", "rs3", "--bind_ip_all", "--port", "27034" ]
+    ports:
+      - 27034:27034
+
+  mongoc1:
+    image: mongo:4.4
+    hostname: mongoc1
+    command: ["/usr/bin/mongod", "--configsvr", "--replSet", "rsCfg", "--bind_ip_all", "--port", "27001"]
+    ports:
+      - 27001:27001
+    healthcheck:
+      test: test $$(echo "rs.initiate({_id:\"rsCfg\",members:[{_id:0,host:\"mongoc1:27001\"},{_id:1,host:\"mongoc2:27002\"},{_id:2,host:\"mongoc3:27003\"}]}).ok || rs.status().ok" | mongo --port 27001 --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+
+  mongoc2:
+    image: mongo:4.4
+    hostname: mongoc2
+    command: [ "/usr/bin/mongod", "--configsvr", "--replSet", "rsCfg", "--bind_ip_all", "--port", "27002" ]
+    ports:
+      - 27002:27002
+
+  mongoc3:
+    image: mongo:4.4
+    hostname: mongoc3
+    command: [ "/usr/bin/mongod", "--configsvr", "--replSet", "rsCfg", "--bind_ip_all", "--port", "27003" ]
+    ports:
+      - 27003:27003
+
+  mongos:
+    image: mongo:4.4
+    hostname: mongos
+    command: ["/usr/bin/mongos", "--configdb", "rsCfg/mongoc1:27001,mongoc2:27002,mongoc3:27003", "--bind_ip_all", "--port", "27000"]
+    ports:
+      - 27000:27000
+    depends_on:
+      - mongoc1
