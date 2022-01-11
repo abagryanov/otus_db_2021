@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  seed_node:
+    image: datastax/dse-server:6.8.18
+    environment:
+      - DS_LICENSE=accept
+    cap_add:
+      - IPC_LOCK
+    ulimits:
+      memlock: -1
+
+  node1:
+    image: datastax/dse-server:6.8.18
+    environment:
+      - DS_LICENSE=accept
+      - SEEDS=seed_node
+    links:
+      - seed_node
+    cap_add:
+      - IPC_LOCK
+    ulimits:
+      memlock: -1
+
+  node2:
+    image: datastax/dse-server:6.8.18
+    environment:
+      - DS_LICENSE=accept
+      - SEEDS=seed_node
+    links:
+      - seed_node
+    cap_add:
+      - IPC_LOCK
+    ulimits:
+      memlock: -1
+
+  studio:
+    image: datastax/dse-studio:6.8.18
+    environment:
+      - DS_LICENSE=accept
+    links:
+      - node1
+      - node2
+    ports:
+      - 9091:9091
+
+
+
