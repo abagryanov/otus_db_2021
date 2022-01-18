@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  cassandra:
+    image: datastax/dse-server:6.8.18
+    environment:
+      - DS_LICENSE=accept
+      - START_RPC=true
+    cap_add:
+      - IPC_LOCK
+    ulimits:
+      memlock: -1
+
+  java:
+    image: cassandra-api
+    build: ./
+    depends_on:
+      - cassandra
+    environment:
+      EXAMPLE_CASSANDRA_HOST: "cassandra"
+      EXAMPLE_CASSANDRA_PORT: "9042"
+      EXAMPLE_OPERATIONS: 10000
+      EXAMPLE_REPETITIONS: 5
+      EXAMPLE_CYCLES: 1
+
+
+
