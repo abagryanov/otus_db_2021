@@ -1,0 +1,28 @@
+POST localhost:8090/api/auth/login
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "customerLogin": "abagryanov",
+  "customerPassword": "Test"
+}
+
+###
+
+POST localhost:8090/api/customer/registration
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "firstName": "Anton",
+  "lastName": "Bagryanov",
+  "login": "abagryanov",
+  "password": "Test",
+  "email": "abagryanov@test.ru",
+  "phone": "+7-777-77-77",
+  "roles": [
+    "ADMIN"
+  ]
+}

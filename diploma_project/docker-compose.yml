@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: otus
+      POSTGRES_PASSWORD: otus123
+      POSTGRES_DB: otus_internet_shop
+    ports:
+      - 54321:5432
+
+  postgres-admin:
+    image: library/adminer:4.8.0
+    restart: always
+    ports:
+      - 9090:8080
+
+  app:
+    build: ./backend
+    image: backend
+    environment:
+      SPRING_APP_PROFILE: prod
+      JAVA_OPTIONS: "-Xmx512m"
+    depends_on:
+      - postgres
+    ports:
+      - 8090:8090
+

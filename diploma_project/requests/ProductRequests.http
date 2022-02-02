@@ -1,0 +1,29 @@
+POST localhost:8090/api/auth/login
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "customerLogin": "abagryanov",
+  "customerPassword": "Test"
+}
+
+###
+
+GET localhost:8090/api/product
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiY3VzdG9tZXJMb2dpbiI6ImFiYWdyeWFub3YiLCJjdXN0b21lclJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY0Mzc1OTE3NSwiZXhwIjoxNjQzNzU5NTM1fQ.G3vjL7UoXhOkf1IaMGhj5fnphgiFIk9Ojy0Ph2pdAAU
+Application-Authorization: accessToken
+
+{
+  "productCategories": []
+}
+
+###
+
+GET localhost:8090/api/product
+Content-Type: application/json
+
+{
+  "productCategories": []
+}
